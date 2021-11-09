@@ -49,16 +49,13 @@ const productsSlice = createSlice({
     toggleFavorite(state, action) {
       const {product, isFav} = action.payload;
       if (isFav) {
+        //REMOVE FAVORITE FROM STATE
         state.favorites = state.favorites.filter(x => x.id !== product.id);
-        var newFavoriteMap = state.favoritesMap;
-        delete newFavoriteMap[`${product.id}`];
-        state.favoritesMap = newFavoriteMap;
+        delete state.favoritesMap[`${product.id}`];
       } else {
+        //ADD FAVORITE TO STATE
         state.favorites = [...state.favorites, product];
-        state.favoritesMap = {
-          ...state.favoritesMap,
-          [`${product.id}`]: product,
-        };
+        state.favoritesMap[`${product.id}`] = product;
       }
     },
   },
@@ -68,29 +65,23 @@ const productsSlice = createSlice({
       _loading(true);
     });
     builder.addCase(fetchProducts.fulfilled, (state, action: any) => {
-      var {items: data, nextPage, page} = action.payload;
-      var categories: {[key: string]: Category} =
-        page > 1
-          ? state.categories.reduce(
-              (prev, x: Category) => ({...prev, [`${x.id}`]: {...x}}),
-              {},
-            )
-          : {};
+      var {items: data, nextPage} = action.payload;
+
+      var categories: {[key: string]: Category} = state.categories.reduce(
+        (prev, x: Category) => ({...prev, [`${x.id}`]: {...x}}),
+        {},
+      );
+
       for (let i = 0; i < data.length; i++) {
         const {categoryId, categoryName} = data[i];
-        if (categories[`${categoryId}`]) {
-          categories[`${categoryId}`] = {
-            ...categories[`${categoryId}`],
-            items: [...categories[`${categoryId}`].items, data[i]],
-          };
-        } else {
-          categories[`${categoryId}`] = {
-            id: categoryId,
-            name: categoryName,
-            items: [data[i]],
-          };
-        }
+        categories[`${categoryId}`] = categories[`${categoryId}`] || {
+          id: categoryId,
+          name: categoryName,
+          items: [],
+        };
+        categories[`${categoryId}`].items.push(data[i]);
       }
+
       state.categories = Object.values(categories);
       state.nextPage = nextPage;
       _loading(false);

@@ -2,10 +2,10 @@
  *
  * @format
  */
-import {CategoryItem, SearchField} from 'components';
+import {CategoryItem, LoadMore, SearchField} from 'components';
 import {Category} from 'models';
 import React, {useEffect} from 'react';
-import {Alert, FlatList, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {RootState} from 'store';
 import {fetchFavorites, fetchProducts} from 'store/products';
@@ -17,11 +17,15 @@ const ProductsScreen = () => {
   );
   const dispatch = useDispatch();
 
-  const renderCategoryItem = (category: Category) => (
-    <CategoryItem key={category.id} category={category} />
+  const handleSearch = (query: string) => dispatch(fetchProducts({query}));
+
+  const loadMoreItems = () => dispatch(fetchProducts({nextPage}));
+
+  const renderCategoryItem = ({item}: {item: Category}) => (
+    <CategoryItem key={item.id} category={item} />
   );
 
-  const handleSearch = (query: string) => dispatch(fetchProducts({query}));
+  const keyExtractor = ({id}: Category) => `${id}`;
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -30,26 +34,13 @@ const ProductsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <SearchField handleSearch={handleSearch} delay={750} />
-      <FlatList
+      <SearchField handleSearch={handleSearch} />
+      <FlatList<Category>
         data={categories}
-        renderItem={({item}) => renderCategoryItem(item)}
-        keyExtractor={item => item.id.toString()}
+        renderItem={renderCategoryItem}
+        keyExtractor={keyExtractor}
       />
-      {nextPage && (
-        <TouchableOpacity
-          onPress={() => {
-            dispatch(fetchProducts({nextPage}));
-          }}>
-          <Text
-            style={{
-              backgroundColor: 'blue',
-              lineHeight: 30,
-            }}>
-            Ver mas
-          </Text>
-        </TouchableOpacity>
-      )}
+      {nextPage && <LoadMore action={loadMoreItems} />}
     </View>
   );
 };

@@ -19,13 +19,14 @@ const ProductItem = ({product}: Props) => {
   const navigation = useNavigation<ProductScreenProps>();
   const dispatch = useDispatch();
   const {name} = product;
+
+  const action = () => {
+    dispatch(setSelectedProduct(product));
+    navigation.navigate('Details');
+  };
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          dispatch(setSelectedProduct(product));
-          navigation.navigate('Details');
-        }}>
+      <TouchableOpacity onPress={action}>
         <Text>{name}</Text>
       </TouchableOpacity>
     </View>

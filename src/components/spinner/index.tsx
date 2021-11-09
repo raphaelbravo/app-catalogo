@@ -2,17 +2,28 @@
  *
  * @format
  */
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Modal, Text, View} from 'react-native';
+import {emitter} from 'utils';
 import styles from './styles';
 
-interface Props {
-  visible: boolean;
-}
+const Spinner = () => {
+  const [loading, setLoading] = useState<boolean>(true);
 
-const Spinner = ({visible}: Props) => {
+  useEffect(() => {
+    //Setup app loader listener
+    emitter.on('loading', setLoading);
+    return () => {
+      emitter.removeListener('loading', setLoading);
+    };
+  }, []);
+  const close = () => setLoading(false);
   return (
-    <Modal visible={visible} animationType="fade" transparent={true}>
+    <Modal
+      visible={loading}
+      animationType="fade"
+      transparent={true}
+      onRequestClose={close}>
       <View style={styles.container}>
         <Text>Loading</Text>
       </View>

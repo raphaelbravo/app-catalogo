@@ -13,7 +13,7 @@ export interface Product {
 
 export interface FavoriteSchema {
   favorite_id: number;
-  product_id: string;
+  product_id: number;
   name: string;
   description: string;
   price: number;
@@ -25,6 +25,7 @@ export interface FavoriteSchema {
 
 export class FavoritestDB implements DBEntity {
   table_name: string = 'Favorites';
+
   static get = async () => {
     const db = await getDBConnection();
     /* await db.executeSql('DROP TABLE Favorites'); */
@@ -43,43 +44,22 @@ export class FavoritestDB implements DBEntity {
     var res = await selectDB<FavoriteSchema>(db, 'Favorites');
     return res;
   };
-  static save = async ({
-    id,
-    name,
-    description,
-    price,
-    quantity,
-    categoryId,
-    categoryName,
-    image,
-  }: Product) => {
+  static save = async (product: Product) => {
     const db = await getDBConnection();
-    var res = await saveDB(db, 'Favorites', {
-      product_id: id,
-      name,
-      description,
-      price,
-      quantity,
-      categoryId,
-      categoryName,
-      image,
-    });
-    console.log(res);
+    var productToDB: any = {
+      ...product,
+      product_id: product.id,
+    };
+    delete productToDB.id;
+
+    var res = await saveDB(db, 'Favorites', productToDB);
     if (res) {
       const [{insertId}]: any = res;
       return {
+        ...product,
         favorite_id: insertId,
-        id,
-        name,
-        description,
-        price,
-        quantity,
-        categoryId,
-        categoryName,
-        image,
       };
     }
-    return null;
   };
   static delete = async ({favorite_id}: Product) => {
     if (favorite_id) {

@@ -1,10 +1,26 @@
 import {
   enablePromise,
   openDatabase,
+  ResultSet,
   SQLiteDatabase,
 } from 'react-native-sqlite-storage';
 
 enablePromise(true);
+
+const stringifyForDB = (x: any) => {
+  if (typeof x === 'string') {
+    return `'${x}'`;
+  }
+  return x;
+};
+
+const convertArray = (data: [ResultSet], array: any[]) => {
+  data.forEach(item => {
+    for (let index = 0; index < item.rows.length; index++) {
+      array.push(item.rows.item(index));
+    }
+  });
+};
 
 export interface DBEntity {
   table_name: string;
@@ -20,11 +36,7 @@ export const selectDB = async <T>(
   try {
     const items: T[] = [];
     const results = await db.executeSql(`SELECT * FROM ${tableName}`);
-    results.forEach(result => {
-      for (let index = 0; index < result.rows.length; index++) {
-        items.push(result.rows.item(index));
-      }
-    });
+    convertArray(results, items);
     return items;
   } catch (error) {
     console.error(error);
@@ -35,18 +47,11 @@ export const selectDB = async <T>(
 export const saveDB = async (
   db: SQLiteDatabase,
   tableName: string,
-  props: any,
+  props: Object,
 ): Promise<any> => {
   try {
     const template = Object.keys(props).join(', ');
-    const values = Object.values(props)
-      .map(x => {
-        if (typeof x === 'string') {
-          return `'${x}'`;
-        }
-        return x;
-      })
-      .join(', ');
+    const values = Object.values(props).map(stringifyForDB).join(', ');
     const insertQuery = `INSERT INTO ${tableName}(${template}) values(${values});`;
     var res = await db.executeSql(insertQuery);
     return res;

@@ -12,12 +12,14 @@ type FavoritesProps = NavigationProp<RootStackParamList, 'Products'>;
 
 const FavoritesIcon = () => {
   const navigation = useNavigation<FavoritesProps>();
+
+  const action = () => {
+    navigation.navigate('Favorites');
+  };
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => {
-          navigation.navigate('Favorites');
-        }}>
+      <TouchableOpacity onPress={action}>
         <Text>Fav</Text>
       </TouchableOpacity>
     </View>
