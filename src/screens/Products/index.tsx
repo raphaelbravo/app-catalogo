@@ -35,12 +35,17 @@ const ProductsScreen = () => {
   return (
     <View style={styles.container}>
       <SearchField handleSearch={handleSearch} />
-      <FlatList<Category>
-        data={categories}
-        renderItem={renderCategoryItem}
-        keyExtractor={keyExtractor}
-      />
-      {nextPage && <LoadMore action={loadMoreItems} />}
+      <View style={styles.container}>
+        <FlatList<Category>
+          data={categories}
+          contentContainerStyle={styles.contentList}
+          renderItem={renderCategoryItem}
+          keyExtractor={keyExtractor}
+          ListFooterComponent={
+            nextPage ? <LoadMore action={loadMoreItems} /> : null
+          }
+        />
+      </View>
     </View>
   );
 };

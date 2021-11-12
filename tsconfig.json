@@ -48,6 +48,7 @@
       "store/*": ["./src/store/*"],
       "database/*": ["./src/database/*"],
       "api/*": ["./src/api/*"],
+      "images/*": ["./src/images/*"],
     },
     "types": ["node"],
     // "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */

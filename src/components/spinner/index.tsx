@@ -3,7 +3,7 @@
  * @format
  */
 import React, {useEffect, useState} from 'react';
-import {Modal, Text, View} from 'react-native';
+import {ActivityIndicator, Modal, View} from 'react-native';
 import {emitter} from 'utils';
 import styles from './styles';
 
@@ -25,7 +25,7 @@ const Spinner = () => {
       transparent={true}
       onRequestClose={close}>
       <View style={styles.container}>
-        <Text>Loading</Text>
+        <ActivityIndicator size="large" />
       </View>
     </Modal>
   );

@@ -2,8 +2,9 @@
  *
  * @format
  */
+import {Button, MText} from 'components';
 import React, {useEffect, useState} from 'react';
-import {Modal, Text, TouchableOpacity, View} from 'react-native';
+import {Modal, View} from 'react-native';
 import {emitter, _alert} from 'utils';
 import styles from './styles';
 
@@ -44,14 +45,11 @@ const AlertModal = () => {
     <Modal visible={visible} animationType="fade" transparent={true}>
       <View style={styles.backdrop}>
         <View style={styles.container}>
-          <Text>{message}</Text>
+          <MText style={styles.message}>¿{message}?</MText>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={onOk}>
-              <Text>Ok</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onCancel}>
-              <Text>Cancel</Text>
-            </TouchableOpacity>
+            <Button onPress={onOk}>OK</Button>
+            <View style={styles.spacer} />
+            <Button onPress={onCancel}>Cancel</Button>
           </View>
         </View>
       </View>

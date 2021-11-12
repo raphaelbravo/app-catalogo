@@ -8,6 +8,7 @@ import React from 'react';
 import {FlatList, View} from 'react-native';
 import {useSelector} from 'react-redux';
 import {RootState} from 'store';
+import styles from './styles';
 
 const FavoritesScreen = () => {
   const {favorites} = useSelector((state: RootState) => state.products);
@@ -24,6 +25,7 @@ const FavoritesScreen = () => {
         data={favorites}
         renderItem={renderProductItem}
         keyExtractor={keyExtractor}
+        contentContainerStyle={styles.contentList}
       />
     </View>
   );

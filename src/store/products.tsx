@@ -64,13 +64,15 @@ const productsSlice = createSlice({
     builder.addCase(fetchProducts.pending, () => {
       _loading(true);
     });
-    builder.addCase(fetchProducts.fulfilled, (state, action: any) => {
-      var {items: data, nextPage} = action.payload;
-
-      var categories: {[key: string]: Category} = state.categories.reduce(
-        (prev, x: Category) => ({...prev, [`${x.id}`]: {...x}}),
-        {},
-      );
+    builder.addCase(fetchProducts.fulfilled, (state, action) => {
+      var {items: data, nextPage, page} = action.payload;
+      var categories: {[key: string]: Category} =
+        page === 1
+          ? []
+          : state.categories.reduce(
+              (prev, x: Category) => ({...prev, [`${x.id}`]: {...x}}),
+              {},
+            );
 
       for (let i = 0; i < data.length; i++) {
         const {categoryId, categoryName} = data[i];

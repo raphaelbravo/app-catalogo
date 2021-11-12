@@ -2,10 +2,10 @@
  *
  * @format
  */
-import {ProductItem} from 'components';
+import {MText, ProductItem} from 'components';
 import {Category, Product} from 'models';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
 import styles from './styles';
 interface Props {
   category: Category;
@@ -13,18 +13,18 @@ interface Props {
 
 const CategoryItem = ({category}: Props) => {
   const {name, items} = category;
+
   const renderProductItem = (product: Product) => (
     <ProductItem key={product.id} product={product} />
   );
+  const renderCategoryBox = () => (
+    <View style={styles.categoryContainer}>
+      <MText style={styles.categoryTitle}>{name}</MText>
+    </View>
+  );
   return (
     <View style={styles.container}>
-      <Text
-        style={{
-          backgroundColor: 'red',
-          lineHeight: 100,
-        }}>
-        {name}
-      </Text>
+      {renderCategoryBox()}
       {items.map(renderProductItem)}
     </View>
   );

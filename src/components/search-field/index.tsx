@@ -2,8 +2,9 @@
  *
  * @format
  */
+import {ICONS} from 'images';
 import React, {useRef, useState} from 'react';
-import {TextInput, View} from 'react-native';
+import {Image, TextInput, View} from 'react-native';
 import styles from './styles';
 interface Props {
   handleSearch: (search: string) => any;
@@ -23,7 +24,12 @@ const SearchField = ({handleSearch, delay = 750}: Props) => {
 
   return (
     <View style={styles.container}>
-      <TextInput value={search} onChangeText={onChangeSearch} />
+      <Image source={ICONS.SEARCH} style={styles.search} />
+      <TextInput
+        value={search}
+        onChangeText={onChangeSearch}
+        style={styles.textInput}
+      />
     </View>
   );
 };

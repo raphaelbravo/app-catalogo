@@ -3,26 +3,37 @@
  * @format
  */
 import {NavigationProp, useNavigation} from '@react-navigation/native';
+import {ICONS} from 'images';
+import {Product} from 'models';
 import {RootStackParamList} from 'navigation';
-import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import React, {useMemo} from 'react';
+import {Image, TouchableOpacity} from 'react-native';
 import styles from './styles';
 
 type FavoritesProps = NavigationProp<RootStackParamList, 'Products'>;
 
-const FavoritesIcon = () => {
+interface Props {
+  handleAction?: () => void;
+  active?: boolean | Product;
+}
+const FavoritesIcon = ({handleAction, active = true}: Props) => {
   const navigation = useNavigation<FavoritesProps>();
-
+  const icon = useMemo(
+    () => (active ? ICONS.FAVORITE : ICONS.NO_FAVORITE),
+    [active],
+  );
   const action = () => {
-    navigation.navigate('Favorites');
+    if (handleAction) {
+      handleAction();
+    } else {
+      navigation.navigate('Favorites');
+    }
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={action}>
-        <Text>Fav</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity onPress={action}>
+      <Image source={icon} style={styles.favorite} />
+    </TouchableOpacity>
   );
 };
 

@@ -13,6 +13,7 @@ module.exports = {
           store: './src/store',
           database: './src/database',
           api: './src/api',
+          images: './src/images',
         },
       },
     ],

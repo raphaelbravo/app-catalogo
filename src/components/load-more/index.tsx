@@ -2,8 +2,9 @@
  *
  * @format
  */
+import {MText} from 'components';
 import React from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import styles from './styles';
 
 interface Props {
@@ -12,11 +13,9 @@ interface Props {
 
 const LoadMore = ({action}: Props) => {
   return (
-    <View style={styles.container}>
-      <TouchableOpacity onPress={action}>
-        <Text>Ver mas</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity onPress={action} style={styles.container}>
+      <MText style={styles.link}>Ver mas</MText>
+    </TouchableOpacity>
   );
 };
 

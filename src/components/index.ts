@@ -5,3 +5,6 @@ export * from './favorites-icon';
 export * from './category-item';
 export * from './alert-modal';
 export * from './load-more';
+export * from './m-text';
+export * from './detail-image';
+export * from './button';
