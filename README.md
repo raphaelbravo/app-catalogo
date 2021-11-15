@@ -3,11 +3,16 @@ The Files and Codes present in this repository are part of a running project. In
 
 ## Table of Contents
 
+* [App Overview](#app-overview)
 * [Available Scripts](#available-scripts)
   * [npm start](#npm-start)
   * [npm run ios](#npm-run-ios)
   * [npm run android](#npm-run-android)
 * [Folder Structure](#folder-structure)
+
+## App Overview
+
+![ezgif com-gif-maker](https://user-images.githubusercontent.com/79115294/141834386-0b9abe6b-e19e-448e-995d-4f24e1daa8f4.gif)
 
 ## Available Scripts
 
